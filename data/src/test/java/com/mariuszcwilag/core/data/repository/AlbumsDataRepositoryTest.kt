@@ -5,6 +5,7 @@ import com.mariuszcwilag.core.data.access.local.AlbumsLocalDataSource
 import com.mariuszcwilag.core.data.access.remote.AlbumsRemoteDataSource
 import com.mariuszcwilag.core.data.access.remote.network.model.SongResponse
 import com.mariuszcwilag.test.shared.TestCoroutineRule
+import com.mariuszcwilag.test.shared.getTestCoroutineDispatcherProvider
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -22,6 +23,9 @@ import org.junit.Test
 class AlbumsDataRepositoryTest {
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()
+
+    @Suppress("unused") // Injected in test subject
+    private val coroutineDispatcherProvider = testCoroutineRule.getTestCoroutineDispatcherProvider()
 
     @MockK
     private lateinit var localDataSource: AlbumsLocalDataSource

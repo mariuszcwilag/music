@@ -10,6 +10,8 @@ import com.mariuszcwilag.core.data.access.remote.network.model.SongResponse
 import com.mariuszcwilag.core.data.utils.PagingUtils
 import com.mariuszcwilag.core.domain.albums.AlbumsRepository
 import com.mariuszcwilag.core.domain.albums.model.SongDomainObject
+import com.mariuszcwilag.core.domain.albums.utils.CoroutineDispatcherProvider
+import com.mariuszcwilag.core.domain.albums.utils.mapWithContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -17,6 +19,7 @@ import javax.inject.Singleton
 
 @Singleton
 class AlbumsDataRepository @Inject constructor(
+    private val coroutineDispatcherProvider: CoroutineDispatcherProvider,
     private val localDataSource: AlbumsLocalDataSource,
     private val remoteDataSource: AlbumsRemoteDataSource,
 ) : AlbumsRepository {
@@ -32,7 +35,9 @@ class AlbumsDataRepository @Inject constructor(
             config = PagingUtils.buildConfig(),
             pagingSourceFactory = { localDataSource.getPagedSongs() }
         ).flow.map { pagingData ->
-            pagingData.map(SongEntity::toSongDomainObject)
+            pagingData.mapWithContext(coroutineDispatcherProvider.default) {
+                it.toSongDomainObject()
+            }
         }
     }
 }
