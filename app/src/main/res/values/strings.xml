@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Mariusz Cwilag - Albums</string>
+    <string name="action_settings">Settings</string>
+    <string name="albums_fragment_label">Albums</string>
+
+    <string name="albums_state_loading">Loading...</string>
+    <string name="albums_state_error">Error...</string>
+</resources>
